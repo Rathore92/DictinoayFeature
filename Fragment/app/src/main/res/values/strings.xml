@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">MyFragments</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="landscape_message">This is Landscape mode fragment</string>
+    <string name="portrait_message">This is Portrait mode fragment</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="str_btn_find">Find</string>
+    <string name="hnt_et_location">Enter location</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
+
+
+
+
