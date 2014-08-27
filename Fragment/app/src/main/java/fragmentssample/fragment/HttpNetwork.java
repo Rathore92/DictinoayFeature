@@ -27,23 +27,70 @@ public class HttpNetwork {
 
     public HttpClient client;
     String url = "";
-    HttpGet post;
-
+    HttpGet get;
+    String mobileUrl = "";
+    String multipleResultUrl = "";
+    String wikiUrl = "";
+    HttpPost httpPost;
 
     HttpNetwork(){
         client = new DefaultHttpClient();
         url = "http://maps.google.com/maps/api/geocode/json?address=";
+        wikiUrl = "http://en.wikipedia.org/w/api.php?explaintext&redirects&exchars=500";
+        mobileUrl = "http://en.wikipedia.org/w/api.php?";
+        multipleResultUrl = "http://en.wikipedia.org/w/api.php?";
+    }
+
+
+    public HttpPost GenerateWikiRequest(String message) throws UnsupportedEncodingException {
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        httpPost  = new HttpPost(wikiUrl);
+        urlParameters.add(new BasicNameValuePair("format", "json"));
+        urlParameters.add(new BasicNameValuePair("action", "query"));
+        urlParameters.add(new BasicNameValuePair("prop", "extracts|links"));
+        urlParameters.add(new BasicNameValuePair("titles", message));
+        httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
+        return httpPost;
+    }
+    /*
+            It generating a URL for api to get the wiki link
+    */
+
+    public HttpPost GenerateMobileNetworkRequest(String pageid) throws UnsupportedEncodingException {
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        httpPost  = new HttpPost(mobileUrl);
+        urlParameters.add(new BasicNameValuePair("action", "query"));
+        urlParameters.add(new BasicNameValuePair("format", "json"));
+        urlParameters.add(new BasicNameValuePair("prop", "info"));
+        urlParameters.add(new BasicNameValuePair("pageids", pageid));
+        urlParameters.add(new BasicNameValuePair("inprop", "url"));
+        httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
+        return  httpPost;
+
+    }
+
+
+    public HttpPost GenerateMultipleResultNetworkRequest(String title) throws UnsupportedEncodingException {
+        List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
+        httpPost  = new HttpPost(multipleResultUrl);
+        urlParameters.add(new BasicNameValuePair("action", "query"));
+        urlParameters.add(new BasicNameValuePair("format", "json"));
+        urlParameters.add(new BasicNameValuePair("prop", "info"));
+        urlParameters.add(new BasicNameValuePair("titles", title));
+        urlParameters.add(new BasicNameValuePair("inprop", "url"));
+        httpPost.setEntity(new UrlEncodedFormEntity(urlParameters));
+        return  httpPost;
+
     }
 
     public HttpGet GenerateNetworkRequest(String message) throws UnsupportedEncodingException {
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        post  = new HttpGet(url+message);
-//        urlParameters.add(new BasicNameValuePair("address", "india"));
-//        post.setEntity(new UrlEncodedFormEntity(urlParameters));
-        return post;
+        get  = new HttpGet(url+message);
+        return get;
     }
 
-    public InputStream JsonParse (HttpGet post) throws JSONException, IOException {
+
+    public InputStream JsonParseGet (HttpPost post) throws JSONException, IOException {
 // Parsing using Gson
         HttpResponse response = client.execute(post);
         try {
@@ -55,5 +102,15 @@ public class HttpNetwork {
         }
     }
 
+    public InputStream JsonParse (HttpGet post) throws JSONException, IOException {
+
+        HttpResponse response = client.execute(post);
+        try {
+            return response.getEntity().getContent();
+        }catch (IOException e){
+            Log.e("From catch json parsing","from catch");
+            return null;
+        }
+    }
 
 }

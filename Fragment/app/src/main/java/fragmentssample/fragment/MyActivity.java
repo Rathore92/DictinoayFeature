@@ -14,7 +14,6 @@ import com.google.android.gms.maps.SupportMapFragment;
 import listeners.ViewPagerListener;
 
 public  class MyActivity extends FragmentActivity implements ViewPager.OnPageChangeListener{
-    //private ViewPagerListener listener;
 
     GoogleMapFragment googleMapFragment = new GoogleMapFragment();
     @Override
@@ -22,8 +21,6 @@ public  class MyActivity extends FragmentActivity implements ViewPager.OnPageCha
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my);
         ViewPager pager = (ViewPager) findViewById(R.id.viewPager);
-        //listener = new ViewPagerListener();
-        //pager.setOnPageChangeListener(listener);
         pager.setOnPageChangeListener(this);
         pager.setOffscreenPageLimit(1);
         pager.setAdapter(new MyPagerAdapter(getSupportFragmentManager()));
@@ -56,17 +53,20 @@ public  class MyActivity extends FragmentActivity implements ViewPager.OnPageCha
         public android.support.v4.app.Fragment getItem(int pos) {
             switch(pos) {
                 case 0: {
-                    Log.e("sdfasfsfasfsfsf 0"," : " + pos);
+                    Log.e("Simple 0"," : " + pos);
                     return FirstFragment.newInstance("FirstFragment, Instance 1");
                 }
-                case 1:{Log.e("sdfsdfsdafdsafdsaf 1"," : " + pos);
+                case 1:{Log.e("Google Search 1"," : " + pos);
                     return SecondFragment.newInstance("SecondFragment, Instance 1");
                 }
-                case 2 : { Log.e("sdfafdsfadsfdasfadsfadsfd 2", " : " + pos);
+
+                case 2 : { Log.e("Google map 2", " : " + pos);
+                    return WikiFragment.newInstance("Wikipedia, Instance 1");
+                }
+
+                case 3 : { Log.e("Google map 2", " : " + pos);
                     return googleMapFragment.newInstance("bangalore");
                 }
-//                case 2: return new SupportMapFragment().newInstance("India");
-                //return ThirdFragment.newInstance("sfdfsfsdfsfsfsfsfsdfs");
                 default: return FirstFragment.newInstance("FirstFragment, Instance 1");
             }
         }

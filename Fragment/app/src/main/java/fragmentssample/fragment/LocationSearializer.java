@@ -22,9 +22,7 @@ public class LocationSearializer implements JsonDeserializer <Results> {
     @Override
     public Results deserialize(JsonElement json, Type type, JsonDeserializationContext context) throws JsonParseException {
 
-//        Geometry geometry = new Geometry();
         Results results = new Results();
-
         if(json.isJsonNull()) return null;
         else if (json.isJsonObject())
             return handleObject(json.getAsJsonObject(), context, results);
@@ -32,7 +30,6 @@ public class LocationSearializer implements JsonDeserializer <Results> {
             Log.w("From location Searilizer","It is a json array");
             return null;
         }
-
         else {
             System.out.println("it's not object");
             return null;
@@ -41,6 +38,7 @@ public class LocationSearializer implements JsonDeserializer <Results> {
 
 
     public JsonObject getJsonObect(Map.Entry<String, JsonElement> Entry){
+
         if(Entry != null) {
             if (Entry.getValue() != null) {
                 if (!Entry.getValue().isJsonObject()) {
@@ -55,6 +53,8 @@ public class LocationSearializer implements JsonDeserializer <Results> {
             return null;
         }
     }
+
+
 
     public void setLatLang(Map.Entry<String, JsonElement> latLngLocationEntry,Results results){
 
@@ -75,13 +75,13 @@ public class LocationSearializer implements JsonDeserializer <Results> {
     }
 
     public void setContent(Map.Entry<String, JsonElement> locationEntry,Results results){
+
         if(locationEntry != null)
         {
             if (locationEntry.getKey().equalsIgnoreCase("geometry")) {
                 JsonObject geometryObj = getJsonObect(locationEntry);
                 for (Map.Entry<String, JsonElement> geometryEntry : geometryObj.entrySet()) {
                     JsonObject latLngLocationObj = getJsonObect(geometryEntry);
-
                     if(geometryEntry.getKey().equalsIgnoreCase("location")) {
                         for (Map.Entry<String, JsonElement> latLngLocationEntry : latLngLocationObj.entrySet()) {
                             setLatLang(latLngLocationEntry, results);
@@ -98,25 +98,29 @@ public class LocationSearializer implements JsonDeserializer <Results> {
         }
     }
 
+
+
     public void getJsonResults(Results results, Map.Entry<String, JsonElement> DataEntry){
-        if(DataEntry.getValue().isJsonArray()){
+        if(DataEntry.getValue().isJsonArray()) {
             JsonArray linksArray = DataEntry.getValue().getAsJsonArray();
-            if(linksArray.size() == 0){
+            if (linksArray.size() == 0) {
                 results.getGeometry().getLocation().isConsistant = false;
-            }else {
+            } else {
                 for (JsonElement je : linksArray) {
-                    Log.e("size of array","" + linksArray.size());
-                    printJson(je,results);
+                    Log.e("size of array", "" + linksArray.size());
+                    printJson(je, results);
                 }
             }
-        }
-        else {
+        }else {
             Log.e("From Location serializer","results is not json array");
             results.getGeometry().getLocation().isConsistant = false;
         }
     }
 
+
+
     public  void printJson(JsonElement jsonElement,Results results) {
+
         if (jsonElement.isJsonObject()) {
             Set<Map.Entry<String, JsonElement>> ens = ((JsonObject) jsonElement).entrySet();
             if (ens != null) {
@@ -124,26 +128,16 @@ public class LocationSearializer implements JsonDeserializer <Results> {
                     setContent(en,results);
                 }
             }
-        }
-
-        // Check whether jsonElement is Array or not
-        else if (jsonElement.isJsonArray()) {
+        }else if (jsonElement.isJsonArray()) {
             JsonArray jarr = jsonElement.getAsJsonArray();
-            // Iterate JSON Array to JSON Elements
             for (JsonElement je : jarr) {
                 printJson(je,results);
             }
-        }
-
-        // Check whether jsonElement is NULL or not
-        else if (jsonElement.isJsonNull()) {
+        }else if (jsonElement.isJsonNull()) {
             // print null
             System.out.println("null");
+        }else if (jsonElement.isJsonPrimitive()) {
         }
-        // Check whether jsonElement is Primitive or not
-        else if (jsonElement.isJsonPrimitive()) {
-        }
-
     }
 
 
@@ -166,7 +160,5 @@ public class LocationSearializer implements JsonDeserializer <Results> {
             }
         }
         return results;
-
     }
-
 }

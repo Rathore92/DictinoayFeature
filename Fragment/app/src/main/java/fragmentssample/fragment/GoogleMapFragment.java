@@ -1,7 +1,6 @@
 package fragmentssample.fragment;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
@@ -9,10 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -31,28 +27,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.List;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.LatLng;
-import android.os.Bundle;
-import android.app.Activity;
-import android.widget.Toast;
-
-import org.json.JSONException;
-
-import java.io.IOException;
-import android.util.Log;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import android.location.Address;
 
 public class GoogleMapFragment extends SupportMapFragment implements GoogleMapsInterface{
 
@@ -82,23 +56,19 @@ public class GoogleMapFragment extends SupportMapFragment implements GoogleMapsI
             InputStream source = httpNetwork.JsonParse(httpNetwork.GenerateNetworkRequest(location));
             if (source == null) {
                 Log.e("response from json parsing is : ", source.toString());
-//                exit(0);
+                return;
             }
 
             Reader reader = new InputStreamReader(source);
-            // parse from Gson google library
             results = gson.fromJson(reader, Results.class);
             if (results == null || results.getGeometry().getLocation().isConsistant == false || results.getGeometry().getLocation().isGeomatry == false) {
                 Log.e("address_component ", " is null");
-//                Toast.makeText(activity,"No Location found",Toast.LENGTH_SHORT).show();
                 listener.onLocationReceived(null);
-//                Toast.makeText(getBaseContext(),"Location not Found",Toast.LENGTH_SHORT).show();
             } else {
                 lat = results.getGeometry().getLocation().getLat();
                 lng =  results.getGeometry().getLocation().getLng();
                 point = new LatLng(lat.doubleValue(),lng.doubleValue());
                 listener.onLocationReceived(point);
-
                 Log.w("from mapsActivity","" + results.getGeometry().getLocation().getLat());
                 Log.w("from mapsActivity","" + results.getGeometry().getLocation().getLng());
                 Log.w("from mapsActivity",results.getFormatted_address());
@@ -185,7 +155,6 @@ public class GoogleMapFragment extends SupportMapFragment implements GoogleMapsI
             @Override
             public void run() {
                 if (loc == null) {
-//                    Toast.makeText(activity.getBaseContext(),"No Location found",Toast.LENGTH_SHORT).show();
                     return;
                 } else {
                     try {
