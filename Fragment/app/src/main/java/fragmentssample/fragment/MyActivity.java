@@ -36,7 +36,6 @@ public  class MyActivity extends FragmentActivity implements ViewPager.OnPageCha
         if(position == 1){
             googleMapFragment.onPageSelected();
         }
-
     }
 
     @Override
@@ -54,19 +53,16 @@ public  class MyActivity extends FragmentActivity implements ViewPager.OnPageCha
             switch(pos) {
                 case 0: {
                     Log.e("Simple 0"," : " + pos);
-                    return FirstFragment.newInstance("FirstFragment, Instance 1");
+                    return WikiFragment.newInstance("nicolas cage");
                 }
                 case 1:{Log.e("Google Search 1"," : " + pos);
                     return SecondFragment.newInstance("SecondFragment, Instance 1");
                 }
 
                 case 2 : { Log.e("Google map 2", " : " + pos);
-                    return WikiFragment.newInstance("Wikipedia, Instance 1");
-                }
-
-                case 3 : { Log.e("Google map 2", " : " + pos);
                     return googleMapFragment.newInstance("bangalore");
                 }
+
                 default: return FirstFragment.newInstance("FirstFragment, Instance 1");
             }
         }
