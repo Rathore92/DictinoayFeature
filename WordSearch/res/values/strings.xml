@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">My Application</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_my_activity2">MyActivity2</string>
+    <string name="title_activity_display_message">DisplayMessageActivity</string>
+    <string name="title_activity_d3_acitivity">D3Acitivity</string>
+    <string name="title_activity_network">Network</string>
+
+</resources>
